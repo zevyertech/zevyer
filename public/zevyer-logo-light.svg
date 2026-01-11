@@ -1,0 +1,18 @@
+<svg width="32" height="32" viewBox="0 0 32 32" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <linearGradient id="zevyerLogoGradientLight" x1="0%" y1="100%" x2="100%" y2="0%" gradientUnits="userSpaceOnUse">
+      <stop offset="0%" style="stop-color:#06b6d4;stop-opacity:1" />
+      <stop offset="40%" style="stop-color:#3b82f6;stop-opacity:1" />
+      <stop offset="100%" style="stop-color:#1e3a8a;stop-opacity:1" />
+    </linearGradient>
+  </defs>
+  <!-- Main body: thick angular 7 shape with vertical, horizontal, and diagonal segments -->
+  <path d="M4 28 L4 16 L16 16 L26 4" 
+        stroke="url(#zevyerLogoGradientLight)" 
+        stroke-width="5.5" 
+        stroke-linecap="round" 
+        stroke-linejoin="miter" 
+        fill="none"/>
+  <!-- Arrowhead: solid filled triangle pointing right -->
+  <path d="M26 4 L30 4 L26 10 Z" fill="url(#zevyerLogoGradientLight)"/>
+</svg>
