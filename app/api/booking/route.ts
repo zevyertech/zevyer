@@ -1,4 +1,7 @@
 import { NextRequest, NextResponse } from 'next/server'
+import { Resend } from 'resend'
+
+const resend = new Resend(process.env.RESEND_API_KEY)
 
 export async function POST(request: NextRequest) {
   try {
@@ -33,12 +36,55 @@ export async function POST(request: NextRequest) {
       )
     }
 
-    // Here you would typically:
-    // 1. Save to database
-    // 2. Send confirmation email to user
-    // 3. Send notification email to team
-    // 4. Add to calendar system (Google Calendar, Calendly, etc.)
-    // 5. Check for conflicts
+    // Send emails if Resend is configured
+    if (process.env.RESEND_API_KEY && process.env.RESEND_FROM_EMAIL && process.env.RESEND_TO_EMAIL) {
+      try {
+        // Send confirmation email to user
+        await resend.emails.send({
+          from: process.env.RESEND_FROM_EMAIL,
+          to: email,
+          subject: `Consultation Booking Confirmation - ${consultationType}`,
+          html: `
+            <h2>Your Consultation Has Been Booked!</h2>
+            <p>Hi ${name},</p>
+            <p>Thank you for booking a consultation with Zevyer. Here are your booking details:</p>
+            <ul>
+              <li><strong>Consultation Type:</strong> ${consultationType}</li>
+              <li><strong>Date:</strong> ${new Date(date).toLocaleDateString('en-US', { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' })}</li>
+              <li><strong>Time:</strong> ${time}</li>
+              <li><strong>Company:</strong> ${company}</li>
+            </ul>
+            ${message ? `<p><strong>Your Message:</strong> ${message}</p>` : ''}
+            <p>We look forward to speaking with you!</p>
+            <hr>
+            <p><small>If you need to reschedule or cancel, please contact us at ${process.env.RESEND_TO_EMAIL}</small></p>
+          `,
+        })
+
+        // Send notification email to team
+        await resend.emails.send({
+          from: process.env.RESEND_FROM_EMAIL,
+          to: process.env.RESEND_TO_EMAIL,
+          subject: `New Consultation Booking: ${consultationType} - ${name}`,
+          html: `
+            <h2>New Consultation Booking</h2>
+            <p><strong>Name:</strong> ${name}</p>
+            <p><strong>Email:</strong> ${email}</p>
+            <p><strong>Company:</strong> ${company}</p>
+            <p><strong>Consultation Type:</strong> ${consultationType}</p>
+            <p><strong>Date:</strong> ${new Date(date).toLocaleDateString('en-US', { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' })}</p>
+            <p><strong>Time:</strong> ${time}</p>
+            ${message ? `<p><strong>Message:</strong> ${message}</p>` : ''}
+            <hr>
+            <p><small>Booked at: ${new Date().toISOString()}</small></p>
+          `,
+          replyTo: email,
+        })
+      } catch (emailError) {
+        console.error('Error sending email:', emailError)
+        // Continue even if email fails
+      }
+    }
 
     console.log('Booking submission:', {
       name,
@@ -50,12 +96,6 @@ export async function POST(request: NextRequest) {
       message,
       timestamp: new Date().toISOString(),
     })
-
-    // In production, you would:
-    // - Save to database
-    // - Send confirmation emails
-    // - Integrate with calendar system
-    // - Check availability
 
     return NextResponse.json(
       {

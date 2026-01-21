@@ -1,4 +1,7 @@
 import { NextRequest, NextResponse } from 'next/server'
+import { Resend } from 'resend'
+
+const resend = new Resend(process.env.RESEND_API_KEY)
 
 export async function POST(request: NextRequest) {
   try {
@@ -22,11 +25,31 @@ export async function POST(request: NextRequest) {
       )
     }
 
-    // Here you would typically:
-    // 1. Save to database
-    // 2. Send email notification
-    // 3. Add to CRM
-    // For now, we'll just log and return success
+    // Send email notification if Resend is configured
+    if (process.env.RESEND_API_KEY && process.env.RESEND_FROM_EMAIL && process.env.RESEND_TO_EMAIL) {
+      try {
+        await resend.emails.send({
+          from: process.env.RESEND_FROM_EMAIL,
+          to: process.env.RESEND_TO_EMAIL,
+          subject: subject || `New Contact Form Submission from ${name}`,
+          html: `
+            <h2>New Contact Form Submission</h2>
+            <p><strong>Name:</strong> ${name}</p>
+            <p><strong>Email:</strong> ${email}</p>
+            <p><strong>Company:</strong> ${company}</p>
+            ${subject ? `<p><strong>Subject:</strong> ${subject}</p>` : ''}
+            <p><strong>Message:</strong></p>
+            <p>${message.replace(/\n/g, '<br>')}</p>
+            <hr>
+            <p><small>Submitted at: ${new Date().toISOString()}</small></p>
+          `,
+          replyTo: email,
+        })
+      } catch (emailError) {
+        console.error('Error sending email:', emailError)
+        // Continue even if email fails
+      }
+    }
 
     console.log('Contact form submission:', {
       name,
@@ -36,11 +59,6 @@ export async function POST(request: NextRequest) {
       message,
       timestamp: new Date().toISOString(),
     })
-
-    // In production, you would:
-    // - Save to database (e.g., PostgreSQL, MongoDB)
-    // - Send email via SendGrid, Resend, or similar
-    // - Add to CRM (e.g., HubSpot, Salesforce)
 
     return NextResponse.json(
       {
