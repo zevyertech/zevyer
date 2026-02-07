@@ -206,10 +206,7 @@ export function FAQSection({
   }, [])
 
   useEffect(() => {
-    if (typeof window === "undefined") {
-      setIntroReady(true)
-      return
-    }
+    if (typeof window === "undefined") return
     const frame = window.requestAnimationFrame(() => setIntroReady(true))
     return () => window.cancelAnimationFrame(frame)
   }, [])
@@ -241,10 +238,7 @@ export function FAQSection({
   const toggleQuestion = (index: number) => setActiveIndex((prev) => (prev === index ? -1 : index))
 
   useEffect(() => {
-    if (typeof window === "undefined") {
-      setHasEntered(true)
-      return
-    }
+    if (typeof window === "undefined") return
 
     let timeout: ReturnType<typeof setTimeout>
     const onLoad = () => {

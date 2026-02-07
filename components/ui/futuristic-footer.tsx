@@ -4,7 +4,7 @@ import type React from "react"
 import { useState } from "react"
 import Link from "next/link"
 import Image from "next/image"
-import { ArrowRight, CheckCircle, Sparkles, Twitter, Linkedin, Github, Mail } from "lucide-react"
+import { ArrowRight, CheckCircle, Sparkles, Instagram, Linkedin, Facebook, Mail } from "lucide-react"
 
 export function FuturisticFooter() {
   const [email, setEmail] = useState("")
@@ -59,7 +59,7 @@ export function FuturisticFooter() {
                 {subscribed ? (
                   <div className="flex items-center gap-3 px-6 py-4 rounded-xl bg-green-500/10 border border-green-500/30">
                     <CheckCircle className="w-5 h-5 text-green-400" />
-                    <span className="text-green-400 font-medium">You're subscribed!</span>
+                    <span className="text-green-400 font-medium">You&apos;re subscribed!</span>
                   </div>
                 ) : (
                   <form onSubmit={handleSubscribe} className="flex gap-3">
@@ -107,22 +107,31 @@ export function FuturisticFooter() {
               </p>
               <div className="flex gap-4">
                 <a
-                  href="#"
+                  href="https://www.instagram.com/zevyertech/"
+                  target="_blank"
+                  rel="noreferrer"
                   className="w-10 h-10 rounded-lg bg-gray-800 hover:bg-indigo-600 flex items-center justify-center transition-colors group"
+                  aria-label="Zevyer on Instagram"
                 >
-                  <Twitter className="w-5 h-5 text-gray-400 group-hover:text-white transition-colors" />
+                  <Instagram className="w-5 h-5 text-gray-400 group-hover:text-white transition-colors" />
                 </a>
                 <a
-                  href="#"
+                  href="https://www.linkedin.com/company/zevyer/?viewAsMember=true"
+                  target="_blank"
+                  rel="noreferrer"
                   className="w-10 h-10 rounded-lg bg-gray-800 hover:bg-indigo-600 flex items-center justify-center transition-colors group"
+                  aria-label="Zevyer on LinkedIn"
                 >
                   <Linkedin className="w-5 h-5 text-gray-400 group-hover:text-white transition-colors" />
                 </a>
                 <a
-                  href="#"
+                  href="https://www.facebook.com/profile.php?id=61586046656770"
+                  target="_blank"
+                  rel="noreferrer"
                   className="w-10 h-10 rounded-lg bg-gray-800 hover:bg-indigo-600 flex items-center justify-center transition-colors group"
+                  aria-label="Zevyer on Facebook"
                 >
-                  <Github className="w-5 h-5 text-gray-400 group-hover:text-white transition-colors" />
+                  <Facebook className="w-5 h-5 text-gray-400 group-hover:text-white transition-colors" />
                 </a>
               </div>
             </div>
@@ -198,19 +207,19 @@ export function FuturisticFooter() {
               <h4 className="text-white font-semibold mb-6 text-sm uppercase tracking-wider">Legal</h4>
               <ul className="space-y-4">
                 <li>
-                  <a href="#" className="text-gray-400 hover:text-indigo-400 transition-colors">
+                  <Link href="/privacy" className="text-gray-400 hover:text-indigo-400 transition-colors">
                     Privacy Policy
-                  </a>
+                  </Link>
                 </li>
                 <li>
-                  <a href="#" className="text-gray-400 hover:text-indigo-400 transition-colors">
+                  <Link href="/terms" className="text-gray-400 hover:text-indigo-400 transition-colors">
                     Terms of Service
-                  </a>
+                  </Link>
                 </li>
                 <li>
-                  <a href="#" className="text-gray-400 hover:text-indigo-400 transition-colors">
+                  <Link href="/cookies" className="text-gray-400 hover:text-indigo-400 transition-colors">
                     Cookie Policy
-                  </a>
+                  </Link>
                 </li>
               </ul>
             </div>

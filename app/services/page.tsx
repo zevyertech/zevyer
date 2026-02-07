@@ -40,7 +40,7 @@ export default function ServicesPage() {
       outcomes: ["Production-Ready Code", "Fast Launch Timeline", "Seamless Integrations"],
     },
     {
-      slug: "marketing-strategy",
+      slug: "marketing-consultation",
       title: "Marketing Consultation",
       icon: MessageSquare,
       description: "Strategic roadmaps, audits, optimization sprints, and growth planning.",

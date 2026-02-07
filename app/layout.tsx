@@ -88,10 +88,7 @@ export default function RootLayout({
         {/* Google tag (gtag.js) */}
         {!gtmId && (
           <>
-            <script
-              async
-              src={`https://www.googletagmanager.com/gtag/js?id=${gaId}`}
-            />
+            <script async src={`https://www.googletagmanager.com/gtag/js?id=${gaId}`} />
             <script
               dangerouslySetInnerHTML={{
                 __html: `
@@ -113,7 +110,7 @@ export default function RootLayout({
               src={`https://www.googletagmanager.com/ns.html?id=${gtmId}`}
               height="0"
               width="0"
-              style={{ display: 'none', visibility: 'hidden' }}
+              style={{ display: "none", visibility: "hidden" }}
             />
           </noscript>
         )}

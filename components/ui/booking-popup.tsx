@@ -2,7 +2,6 @@
 
 import type React from "react"
 import { useState, useEffect } from "react"
-import Image from "next/image"
 import {
   X,
   ChevronLeft,
@@ -221,7 +220,7 @@ export function BookingPopup({ isOpen, onClose }: BookingPopupProps) {
                 <CheckCircle className="w-10 h-10 text-green-400" />
               </div>
               <h3 className="text-2xl font-bold text-white mb-2">Booking Confirmed!</h3>
-              <p className="text-gray-400 mb-6">We've sent a confirmation email to {formData.email}</p>
+              <p className="text-gray-400 mb-6">We&apos;ve sent a confirmation email to {formData.email}</p>
               <div className="inline-flex flex-col items-center gap-2 p-4 rounded-xl bg-gray-800 border border-gray-700">
                 <p className="text-sm text-gray-400">Your appointment</p>
                 <p className="text-lg font-semibold text-white">{selectedDate && formatDate(selectedDate)}</p>

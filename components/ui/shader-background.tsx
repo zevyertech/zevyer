@@ -206,7 +206,7 @@ export const ShaderBackground = ({ className = "" }: ShaderBackgroundProps) => {
       window.removeEventListener("resize", resizeCanvas)
       cancelAnimationFrame(animationId)
     }
-  }, [])
+  }, [fsSource, vsSource])
 
   return <canvas ref={canvasRef} className={`w-full h-full ${className}`} />
 }

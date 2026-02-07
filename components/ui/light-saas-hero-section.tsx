@@ -93,11 +93,11 @@ export const Plasma: React.FC<PlasmaProps> = React.memo(({
   mouseInteractive = false,
 }) => {
   const containerRef = useRef<HTMLDivElement | null>(null)
-  const mousePos = useRef({ x: 0, y: 0 })
   const [isReady, setIsReady] = useState(false)
 
   useEffect(() => {
-    if (!containerRef.current || typeof window === 'undefined') return
+    if (!containerRef.current || typeof window === "undefined") return
+    const container = containerRef.current
     
     try {
       const useCustomColor = color ? 1.0 : 0.0
@@ -114,7 +114,7 @@ export const Plasma: React.FC<PlasmaProps> = React.memo(({
       canvas.style.display = "block"
       canvas.style.width = "100%"
       canvas.style.height = "100%"
-      containerRef.current.appendChild(canvas)
+      container.appendChild(canvas)
       const geometry = new Triangle(gl)
       const program = new Program(gl, {
         vertex,
@@ -134,44 +134,45 @@ export const Plasma: React.FC<PlasmaProps> = React.memo(({
       })
       const mesh = new Mesh(gl, { geometry, program })
       const handleMouseMove = (e: MouseEvent) => {
-        if (!mouseInteractive || !containerRef.current) return
-        const rect = containerRef.current.getBoundingClientRect()
+        if (!mouseInteractive) return
+        const rect = container.getBoundingClientRect()
         const mouseUniform = program.uniforms.uMouse.value as Float32Array
         mouseUniform[0] = e.clientX - rect.left
         mouseUniform[1] = e.clientY - rect.top
       }
-      if (mouseInteractive) containerRef.current.addEventListener("mousemove", handleMouseMove)
+      if (mouseInteractive) container.addEventListener("mousemove", handleMouseMove)
       const setSize = () => {
-        if (!containerRef.current) return
-        const rect = containerRef.current.getBoundingClientRect()
+        const rect = container.getBoundingClientRect()
         renderer.setSize(rect.width, rect.height)
         const res = program.uniforms.iResolution.value as Float32Array
         res[0] = gl.drawingBufferWidth
         res[1] = gl.drawingBufferHeight
       }
       const ro = new ResizeObserver(setSize)
-      ro.observe(containerRef.current)
+      ro.observe(container)
       setSize()
       let raf = 0
+      let readyFrame = 0
       const t0 = performance.now()
       const loop = (t: number) => {
-        ;(program.uniforms.iTime as any).value = (t - t0) * 0.001
+        const timeUniform = program.uniforms.iTime as { value: number }
+        timeUniform.value = (t - t0) * 0.001
         renderer.render({ scene: mesh })
         raf = requestAnimationFrame(loop)
       }
       raf = requestAnimationFrame(loop)
-      setIsReady(true)
+      readyFrame = window.requestAnimationFrame(() => setIsReady(true))
       return () => {
         cancelAnimationFrame(raf)
+        if (readyFrame) window.cancelAnimationFrame(readyFrame)
         ro.disconnect()
-        if (mouseInteractive && containerRef.current)
-          containerRef.current.removeEventListener("mousemove", handleMouseMove)
+        if (mouseInteractive) container.removeEventListener("mousemove", handleMouseMove)
         try {
-          containerRef.current?.removeChild(canvas)
+          container.removeChild(canvas)
         } catch {}
       }
     } catch (error) {
-      console.error('Plasma component error:', error)
+      console.error("Plasma component error:", error)
     }
   }, [color, speed, direction, scale, opacity, mouseInteractive])
   
@@ -184,7 +185,26 @@ export const Plasma: React.FC<PlasmaProps> = React.memo(({
   )
 })
 
-export const HeroSection = ({ onBookClick }: { onBookClick?: () => void }) => {
+Plasma.displayName = "Plasma"
+
+export const HeroSection = ({
+  onBookClick,
+  onWatchDemo,
+}: {
+  onBookClick?: () => void
+  onWatchDemo?: () => void
+}) => {
+  const handleWatchDemo = () => {
+    if (onWatchDemo) {
+      onWatchDemo()
+      return
+    }
+    const servicesSection = document.getElementById("services")
+    if (servicesSection) {
+      servicesSection.scrollIntoView({ behavior: "smooth", block: "start" })
+    }
+  }
+
   return (
     <div className="min-h-screen relative overflow-hidden w-full bg-white">
       <div className="absolute inset-0 z-0">
@@ -212,7 +232,10 @@ export const HeroSection = ({ onBookClick }: { onBookClick?: () => void }) => {
           >
             Book Free Consultation <ArrowRight className="ml-2 w-5 h-5" />
           </button>
-          <button className="px-8 py-4 bg-white text-gray-900 font-semibold rounded-xl border border-gray-200 shadow-sm hover:shadow-md transition-all flex items-center">
+          <button
+            onClick={handleWatchDemo}
+            className="px-8 py-4 bg-white text-gray-900 font-semibold rounded-xl border border-gray-200 shadow-sm hover:shadow-md transition-all flex items-center"
+          >
             <Play className="w-5 h-5 mr-2 fill-gray-900" /> Watch Demo
           </button>
         </div>

@@ -25,7 +25,7 @@ export function FeatureSteps({
   className,
   title = "How to get Started",
   autoPlayInterval = 1000, // Changed default to 1 second as requested
-  imageHeight = "h-[400px]",
+  imageHeight = "h-[200px] md:h-[300px] lg:h-[400px]",
 }: FeatureStepsProps) {
   const [currentFeature, setCurrentFeature] = useState(0)
   const [progress, setProgress] = useState(0)
@@ -101,9 +101,7 @@ export function FeatureSteps({
             ))}
           </div>
 
-          <div
-            className={cn("order-1 md:order-2 relative h-[200px] md:h-[300px] lg:h-[400px] overflow-hidden rounded-lg")}
-          >
+          <div className={cn("order-1 md:order-2 relative overflow-hidden rounded-lg", imageHeight)}>
             <AnimatePresence mode="wait">
               {features.map(
                 (feature, index) =>

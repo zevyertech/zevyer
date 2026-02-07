@@ -25,7 +25,7 @@ const GlassmorphicNavbar = () => {
     { slug: "seo-and-content", label: "SEO & Content" },
     { slug: "branding-creative", label: "Branding & Creative" },
     { slug: "custom-development", label: "Custom Development" },
-    { slug: "marketing-strategy", label: "Marketing Consultation" },
+    { slug: "marketing-consultation", label: "Marketing Consultation" },
     { slug: "ai-automation", label: "AI & Automation" },
   ]
 

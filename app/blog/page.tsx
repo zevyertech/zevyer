@@ -1,6 +1,7 @@
 "use client"
 
 import Link from "next/link"
+import Image from "next/image"
 import { ArrowRight, Clock, Tag, TrendingUp, Sparkles, Search } from "lucide-react"
 import { useState } from "react"
 import { FuturisticFooter } from "@/components/ui/futuristic-footer"
@@ -112,7 +113,6 @@ export default function BlogPage() {
   })
 
   const featuredPosts = blogPosts.filter((post) => post.featured)
-  const regularPosts = filteredPosts.filter((post) => !post.featured || selectedCategory !== "All")
 
   return (
     <main className="min-h-screen bg-gray-950">
@@ -200,9 +200,12 @@ export default function BlogPage() {
                     <GlowingEffect spread={40} glow={true} disabled={false} proximity={64} inactiveZone={0.01} />
                     <div className="relative bg-gray-900 border border-gray-800 rounded-2xl overflow-hidden hover:border-indigo-500/50 transition-all">
                       <div className={`relative overflow-hidden ${i === 0 ? "h-80" : "h-48"}`}>
-                        <img
+                        <Image
                           src={post.image || "/placeholder.svg"}
                           alt={post.title}
+                          width={1200}
+                          height={800}
+                          loading={i === 0 ? "eager" : "lazy"}
                           className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
                         />
                         <div className="absolute inset-0 bg-gradient-to-t from-gray-900 via-gray-900/50 to-transparent" />
@@ -267,9 +270,12 @@ export default function BlogPage() {
                   <GlowingEffect spread={40} glow={true} disabled={false} proximity={64} inactiveZone={0.01} />
                   <div className="relative h-full bg-gray-900 border border-gray-800 rounded-2xl overflow-hidden hover:border-indigo-500/50 transition-all">
                     <div className="relative h-48 overflow-hidden">
-                      <img
+                      <Image
                         src={post.image || "/placeholder.svg"}
                         alt={post.title}
+                        width={1200}
+                        height={800}
+                        loading="lazy"
                         className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
                       />
                       <div className="absolute inset-0 bg-gradient-to-t from-gray-900 to-transparent" />

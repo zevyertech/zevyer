@@ -32,6 +32,13 @@ export default function Home() {
     setIsBookingOpen(true)
   }
 
+  const handleWatchDemo = () => {
+    const section = document.getElementById("services")
+    if (section) {
+      section.scrollIntoView({ behavior: "smooth", block: "start" })
+    }
+  }
+
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault()
     setIsSubmitting(true)
@@ -147,11 +154,50 @@ export default function Home() {
     },
   ]
 
+  const services = [
+    {
+      slug: "performance-marketing",
+      icon: BarChart3,
+      title: "Performance Marketing",
+      desc: "Google Ads, Meta, TikTok, LinkedIn—data-driven campaigns with measurable ROI.",
+    },
+    {
+      slug: "branding-creative",
+      icon: Sparkles,
+      title: "Branding & Creative",
+      desc: "Brand strategy, design systems, video, and content that converts.",
+    },
+    {
+      slug: "custom-development",
+      icon: Code2,
+      title: "Web & App Development",
+      desc: "Custom web applications, mobile apps, and software built for scale.",
+    },
+    {
+      slug: "seo-and-content",
+      icon: Zap,
+      title: "SEO & Content",
+      desc: "Technical SEO, content strategy, and organic growth systems.",
+    },
+    {
+      slug: "marketing-consultation",
+      icon: MessageSquare,
+      title: "Marketing Consultation",
+      desc: "Strategic roadmaps, audit & optimization, growth planning.",
+    },
+    {
+      slug: "ai-automation",
+      icon: Sparkles,
+      title: "AI & Automation",
+      desc: "Chatbots, agents, workflows, and predictive analytics for your business.",
+    },
+  ]
+
   return (
     <main className="min-h-screen">
       <BookingPopup isOpen={isBookingOpen} onClose={() => setIsBookingOpen(false)} />
 
-      <HeroSection onBookClick={handleBookClick} />
+      <HeroSection onBookClick={handleBookClick} onWatchDemo={handleWatchDemo} />
 
       <section className="py-16 bg-gray-50 border-y border-gray-200">
         <div className="max-w-6xl mx-auto px-4">
@@ -182,42 +228,11 @@ export default function Home() {
           </div>
 
           <div className="grid md:grid-cols-3 gap-8">
-            {[
-              {
-                icon: BarChart3,
-                title: "Performance Marketing",
-                desc: "Google Ads, Meta, TikTok, LinkedIn—data-driven campaigns with measurable ROI.",
-              },
-              {
-                icon: Sparkles,
-                title: "Branding & Creative",
-                desc: "Brand strategy, design systems, video, and content that converts.",
-              },
-              {
-                icon: Code2,
-                title: "Web & App Development",
-                desc: "Custom web applications, mobile apps, and software built for scale.",
-              },
-              {
-                icon: Zap,
-                title: "SEO & Content",
-                desc: "Technical SEO, content strategy, and organic growth systems.",
-              },
-              {
-                icon: MessageSquare,
-                title: "Marketing Consultation",
-                desc: "Strategic roadmaps, audit & optimization, growth planning.",
-              },
-              {
-                icon: Sparkles,
-                title: "AI & Automation",
-                desc: "Chatbots, agents, workflows, and predictive analytics for your business.",
-              },
-            ].map((service, i) => {
+            {services.map((service, i) => {
               const Icon = service.icon
               return (
                 <Link
-                  href={`/services/${service.title.toLowerCase().replace(/\s+/g, "-").replace("&", "and")}`}
+                  href={`/services/${service.slug}`}
                   key={i}
                 >
                   <div className="relative rounded-2xl">
@@ -318,7 +333,7 @@ export default function Home() {
           <div className="bg-white rounded-2xl shadow-xl p-12 border border-gray-200">
             <h2 className="text-3xl font-bold text-gray-900 mb-2 text-center">Get Your Growth Plan</h2>
             <p className="text-gray-600 text-center mb-8">
-              Tell us about your business. We'll create a tailored roadmap in 24 hours.
+              Tell us about your business. We&apos;ll create a tailored roadmap in 24 hours.
             </p>
 
             {submitted ? (
@@ -326,7 +341,7 @@ export default function Home() {
                 <div className="w-16 h-16 rounded-full bg-green-100 flex items-center justify-center mx-auto mb-4">
                   <CheckCircle className="w-8 h-8 text-green-600" />
                 </div>
-                <p className="text-xl font-semibold text-gray-900">Thanks! We'll be in touch shortly.</p>
+                <p className="text-xl font-semibold text-gray-900">Thanks! We&apos;ll be in touch shortly.</p>
                 <p className="text-gray-600 mt-2">Check your email for next steps.</p>
               </div>
             ) : (
@@ -415,7 +430,7 @@ export default function Home() {
         <div className="max-w-4xl mx-auto px-4 text-center">
           <h2 className="text-4xl md:text-5xl font-bold mb-6">Ready to Scale?</h2>
           <p className="text-xl text-indigo-100 mb-8 max-w-2xl mx-auto">
-            Let's build your growth strategy together. Book a free consultation with our team.
+            Let&apos;s build your growth strategy together. Book a free consultation with our team.
           </p>
           <button
             onClick={handleBookClick}

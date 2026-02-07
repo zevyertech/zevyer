@@ -8,7 +8,29 @@ import { FuturisticFooter } from "@/components/ui/futuristic-footer"
 import { ServiceHero } from "@/components/ui/service-hero"
 import { use } from "react"
 
-const serviceDetails: Record<string, any> = {
+interface ServiceProcessStep {
+  step: string
+  desc: string
+}
+
+interface ServiceFaqItem {
+  q: string
+  a: string
+}
+
+interface ServiceDetail {
+  title: string
+  tagline: string
+  badge: string
+  intro: string
+  outcomes: string[]
+  deliverables: string[]
+  tools: string[]
+  process: ServiceProcessStep[]
+  faq: ServiceFaqItem[]
+}
+
+const serviceDetails: Record<string, ServiceDetail> = {
   "performance-marketing": {
     title: "Performance Marketing",
     tagline: "Data-Driven Campaigns That Scale",
@@ -180,48 +202,6 @@ const serviceDetails: Record<string, any> = {
       },
     ],
   },
-  "marketing-strategy": {
-    title: "Marketing Consultation",
-    tagline: "Strategic Clarity for Growth",
-    badge: "Growth Strategy",
-    intro:
-      "Strategic roadmaps, audits, optimization sprints, and growth planning. We help you make smarter decisions faster.",
-    outcomes: [
-      "Clear growth strategy with prioritized actions",
-      "Channel recommendations backed by data",
-      "Quick wins identified and executed",
-      "Long-term strategic roadmap",
-    ],
-    deliverables: [
-      "Comprehensive marketing audit",
-      "Competitive analysis and benchmarking",
-      "Channel strategy recommendations",
-      "Growth roadmap with timelines",
-      "Ongoing strategic advisory",
-    ],
-    tools: ["Google Analytics", "Mixpanel", "Tableau", "Notion", "Miro"],
-    process: [
-      { step: "Audit", desc: "Review current marketing performance, channels, and assets" },
-      { step: "Analysis", desc: "Identify gaps, opportunities, and competitive positioning" },
-      { step: "Strategy", desc: "Develop prioritized recommendations and action plan" },
-      { step: "Roadmap", desc: "Create timeline with milestones and success metrics" },
-      { step: "Execution Support", desc: "Guide implementation and provide ongoing advisory" },
-    ],
-    faq: [
-      {
-        q: "Do you execute or just advise?",
-        a: "Both. We can provide strategic advisory only, or execute the full plan with our team.",
-      },
-      {
-        q: "How often do we meet?",
-        a: "Weekly check-ins during active projects. Monthly strategic reviews for retainer clients.",
-      },
-      {
-        q: "What if we already have a marketing team?",
-        a: "We work alongside your team, providing expertise and capacity where needed.",
-      },
-    ],
-  },
   "ai-automation": {
     title: "AI & Automation",
     tagline: "Intelligence That Works For You",
@@ -261,48 +241,6 @@ const serviceDetails: Record<string, any> = {
       {
         q: "Can AI integrate with our existing tools?",
         a: "Absolutely. We integrate with CRMs, ERPs, communication tools, and custom APIs.",
-      },
-    ],
-  },
-  "web-&-app-development": {
-    title: "Web & App Development",
-    tagline: "Built for Performance and Scale",
-    badge: "Full-Stack Development",
-    intro:
-      "Web applications, mobile apps, and software built with modern architecture, security, and scalability. From MVP to enterprise systems.",
-    outcomes: [
-      "Production-ready, performant applications",
-      "Fast launch timelines without compromising quality",
-      "Seamless integrations with your existing stack",
-      "Long-term maintainability and scalability",
-    ],
-    deliverables: [
-      "Full-stack web and mobile applications",
-      "API development and integrations",
-      "Database design and optimization",
-      "CI/CD pipelines and deployment automation",
-      "Comprehensive documentation and knowledge transfer",
-    ],
-    tools: ["React", "Next.js", "TypeScript", "Node.js", "PostgreSQL", "Docker", "AWS/GCP"],
-    process: [
-      { step: "Discovery & Planning", desc: "Define requirements, architecture, and technical roadmap" },
-      { step: "Design & Prototyping", desc: "Create wireframes, UI/UX designs, and interactive prototypes" },
-      { step: "Development", desc: "Build frontend, backend, integrations, and testing" },
-      { step: "QA & Deployment", desc: "Comprehensive testing, security audit, production deployment" },
-      { step: "Support & Maintenance", desc: "Ongoing support, monitoring, and feature updates" },
-    ],
-    faq: [
-      {
-        q: "What's your typical project timeline?",
-        a: "MVPs launch in 8-12 weeks. Larger projects take 4-6 months depending on scope and complexity.",
-      },
-      {
-        q: "Do you provide ongoing support?",
-        a: "Yes. We offer retainer-based support and feature development packages post-launch.",
-      },
-      {
-        q: "Can you work with our existing codebase?",
-        a: "Absolutely. We audit legacy code, migrate systems, and extend existing applications.",
       },
     ],
   },
@@ -371,7 +309,7 @@ export default function ServiceDetailPage({ params }: PageProps) {
     )
   }
 
-  const processFeatures = service.process.map((item: any, index: number) => ({
+  const processFeatures = service.process.map((item, index) => ({
     step: `Step ${index + 1}`,
     title: item.step,
     content: item.desc,
@@ -450,7 +388,7 @@ export default function ServiceDetailPage({ params }: PageProps) {
             title={`${service.title} FAQ`}
             subtitle={`Common questions about our ${service.title.toLowerCase()} services.`}
             introLabel={service.title}
-            faqs={service.faq.map((item: { q: string; a: string }) => ({
+            faqs={service.faq.map((item) => ({
               question: item.q,
               answer: item.a,
             }))}
@@ -463,7 +401,7 @@ export default function ServiceDetailPage({ params }: PageProps) {
         <div className="max-w-4xl mx-auto px-4 text-center">
           <h2 className="text-4xl md:text-5xl font-bold mb-6">Ready to get started?</h2>
           <p className="text-xl text-indigo-100 mb-10 max-w-2xl mx-auto">
-            Let's discuss how {service.title.toLowerCase()} can transform your business.
+            Let&apos;s discuss how {service.title.toLowerCase()} can transform your business.
           </p>
           <Link
             href="/contact"

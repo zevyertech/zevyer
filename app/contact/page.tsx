@@ -50,6 +50,10 @@ export default function ContactPage() {
     }
   }
 
+  const handleOpenChat = () => {
+    window.location.href = "mailto:hello@zevyer.com?subject=Quick%20Question%20from%20Zevyer.com"
+  }
+
   return (
     <main className="min-h-screen bg-white">
       <BookingPopup isOpen={isBookingOpen} onClose={() => setIsBookingOpen(false)} />
@@ -59,7 +63,7 @@ export default function ContactPage() {
         <div className="max-w-4xl mx-auto px-4 text-center">
           <h1 className="text-5xl md:text-6xl font-bold text-gray-900 mb-6">Get in Touch</h1>
           <p className="text-xl text-gray-600">
-            We're here to help. Reach out and let's start a conversation about your growth.
+            We&apos;re here to help. Reach out and let&apos;s start a conversation about your growth.
           </p>
         </div>
       </section>
@@ -124,7 +128,7 @@ export default function ContactPage() {
                     <CheckCircle className="w-8 h-8 text-green-600" />
                   </div>
                   <p className="text-xl font-semibold text-gray-900">Message sent!</p>
-                  <p className="text-gray-600 mt-2">We'll get back to you soon.</p>
+                  <p className="text-gray-600 mt-2">We&apos;ll get back to you soon.</p>
                 </div>
               ) : (
                 <form onSubmit={handleSubmit} className="space-y-4">
@@ -216,7 +220,10 @@ export default function ContactPage() {
               <p className="text-gray-600 mb-6">
                 Have a quick question? Chat with our team in real-time via our messaging platform.
               </p>
-              <button className="inline-flex items-center px-6 py-2 rounded-lg bg-green-600 text-white font-semibold hover:bg-green-700 transition-all">
+              <button
+                onClick={handleOpenChat}
+                className="inline-flex items-center px-6 py-2 rounded-lg bg-green-600 text-white font-semibold hover:bg-green-700 transition-all"
+              >
                 Open Chat
               </button>
             </div>
@@ -225,7 +232,9 @@ export default function ContactPage() {
               <h3 className="text-xl font-bold text-gray-900 mb-3">Connect on LinkedIn</h3>
               <p className="text-gray-600 mb-6">Follow our updates, insights, and case studies on LinkedIn.</p>
               <a
-                href="#"
+                href="https://www.linkedin.com/company/zevyer/?viewAsMember=true"
+                target="_blank"
+                rel="noreferrer"
                 className="inline-flex items-center px-6 py-2 rounded-lg bg-blue-600 text-white font-semibold hover:bg-blue-700 transition-all"
               >
                 Follow Us

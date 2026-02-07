@@ -1,8 +1,21 @@
 import Link from "next/link"
+import Image from "next/image"
 import { ArrowLeft, Clock, Calendar, Share2, Twitter, Linkedin, ArrowRight } from "lucide-react"
 import { FuturisticFooter } from "@/components/ui/futuristic-footer"
 
-const blogPosts: Record<string, any> = {
+interface BlogPost {
+  title: string
+  excerpt: string
+  category: string
+  readTime: string
+  date: string
+  author: string
+  authorRole: string
+  image: string
+  content: string
+}
+
+const blogPosts: Record<string, BlogPost> = {
   "ai-marketing-automation-2025": {
     title: "The Future of AI in Marketing Automation: 2025 and Beyond",
     excerpt:
@@ -100,6 +113,124 @@ const blogPosts: Record<string, any> = {
       <p>Final refinements, documentation, and launch preparation. Set up monitoring and analytics from day one.</p>
     `,
   },
+  "seo-content-strategy": {
+    title: "Content Strategy That Drives Organic Growth: A Complete Framework",
+    excerpt:
+      "Build a content engine that compounds. From keyword research to content production to distribution—everything you need.",
+    category: "SEO & Content",
+    readTime: "12 min read",
+    date: "Dec 28, 2024",
+    author: "Priya Nair",
+    authorRole: "SEO Lead",
+    image: "/content-strategy-seo.jpg",
+    content: `
+      <p>Organic growth is rarely an accident. High-performing teams build a content strategy that ties search intent to business outcomes, then execute consistently.</p>
+
+      <h2>Step 1: Align on Business Goals</h2>
+      <p>Start with revenue and pipeline targets, then map those goals to topics, funnel stages, and target audiences.</p>
+
+      <h2>Step 2: Build a Keyword Map</h2>
+      <p>Group keywords by intent and difficulty. Focus on clusters that drive qualified traffic, not just volume.</p>
+
+      <h2>Step 3: Create the Content System</h2>
+      <p>Define formats, templates, and review workflows so production is repeatable and scalable.</p>
+
+      <h2>Step 4: Distribute and Iterate</h2>
+      <p>Publish, promote, measure, and improve based on real performance data.</p>
+    `,
+  },
+  "brand-positioning-startups": {
+    title: "Brand Positioning for Startups: Stand Out in a Crowded Market",
+    excerpt:
+      "Your brand is more than a logo. Learn how to craft positioning that resonates with your ideal customers and drives growth.",
+    category: "Branding",
+    readTime: "7 min read",
+    date: "Dec 22, 2024",
+    author: "Lena Morales",
+    authorRole: "Brand Strategist",
+    image: "/brand-positioning-creative.jpg",
+    content: `
+      <p>Positioning is the story customers repeat back to you. Strong positioning makes it obvious why you're the right choice.</p>
+
+      <h2>Define the Category</h2>
+      <p>Clarify what you do, who you serve, and what makes you different. If you cannot explain this in one sentence, customers won't either.</p>
+
+      <h2>Find the Strategic Advantage</h2>
+      <p>Identify the intersection of your strengths, customer pains, and competitive gaps.</p>
+
+      <h2>Message with Consistency</h2>
+      <p>Translate positioning into clear, repeatable language across your site, ads, and sales materials.</p>
+    `,
+  },
+  "chatbot-implementation-guide": {
+    title: "Building AI Chatbots That Actually Help Customers",
+    excerpt:
+      "Move beyond FAQ bots. Learn how to build intelligent conversational agents that solve real problems and drive conversions.",
+    category: "AI & Automation",
+    readTime: "9 min read",
+    date: "Dec 18, 2024",
+    author: "Andre Patel",
+    authorRole: "AI Solutions Lead",
+    image: "/ai-chatbot-conversation.jpg",
+    content: `
+      <p>Great chatbots are fast, accurate, and helpful. The best ones do not feel like bots at all.</p>
+
+      <h2>Start with Intent, Not Features</h2>
+      <p>Define the top customer intents you want to support, then design flows that reduce time to resolution.</p>
+
+      <h2>Connect the Right Data</h2>
+      <p>Integrate your knowledge base, product data, and support systems so the chatbot can respond with real answers.</p>
+
+      <h2>Measure and Improve</h2>
+      <p>Track containment rate, CSAT, and deflection. Optimize the model and content based on real conversations.</p>
+    `,
+  },
+  "saas-marketing-playbook": {
+    title: "The Complete SaaS Marketing Playbook for 2025",
+    excerpt:
+      "Acquisition, activation, retention, referral—the full funnel breakdown for SaaS companies looking to scale efficiently.",
+    category: "Performance Marketing",
+    readTime: "15 min read",
+    date: "Dec 15, 2024",
+    author: "Jordan Lee",
+    authorRole: "Growth Director",
+    image: "/saas-marketing-growth.jpg",
+    content: `
+      <p>Scaling SaaS growth requires a full-funnel approach. That means balancing top-of-funnel demand with retention and expansion.</p>
+
+      <h2>Acquisition</h2>
+      <p>Invest in channels with measurable ROI and fast feedback loops.</p>
+
+      <h2>Activation</h2>
+      <p>Onboarding is the real conversion. Remove friction and guide users to value quickly.</p>
+
+      <h2>Retention and Expansion</h2>
+      <p>Build lifecycle programs that keep users engaged and expand usage over time.</p>
+    `,
+  },
+  "technical-seo-checklist": {
+    title: "Technical SEO Checklist: 50 Items for 2025",
+    excerpt:
+      "Core Web Vitals, crawlability, indexation, schema markup—everything you need to ensure your site is technically sound.",
+    category: "SEO & Content",
+    readTime: "11 min read",
+    date: "Dec 10, 2024",
+    author: "Haruto Sato",
+    authorRole: "Technical SEO Specialist",
+    image: "/technical-seo-analysis.jpg",
+    content: `
+      <p>Technical SEO is the foundation of organic growth. If search engines cannot crawl and understand your site, content cannot perform.</p>
+
+      <h2>Core Web Vitals</h2>
+      <p>Optimize LCP, CLS, and INP by compressing images, minimizing JS, and reducing layout shifts.</p>
+
+      <h2>Indexation and Crawlability</h2>
+      <p>Use sitemaps, clean URL structures, and correct canonical tags to guide search engines.</p>
+
+      <h2>Structured Data</h2>
+      <p>Implement schema markup to improve rich results and enhance search visibility.</p>
+    `,
+  },
 }
 
 interface PageProps {
@@ -109,6 +240,9 @@ interface PageProps {
 export default async function BlogPostPage({ params }: PageProps) {
   const resolvedParams = await params
   const post = blogPosts[resolvedParams.slug]
+  const shareUrl = `https://zevyer.com/blog/${resolvedParams.slug}`
+  const encodedShareUrl = encodeURIComponent(shareUrl)
+  const encodedShareTitle = encodeURIComponent(post?.title || "Zevyer Blog")
 
   if (!post) {
     return (
@@ -177,15 +311,33 @@ export default async function BlogPostPage({ params }: PageProps) {
                 {post.date}
               </span>
               <div className="flex items-center gap-2">
-                <button className="w-10 h-10 rounded-lg bg-gray-800 hover:bg-gray-700 flex items-center justify-center transition-colors">
+                <a
+                  href={`https://twitter.com/intent/tweet?url=${encodedShareUrl}&text=${encodedShareTitle}`}
+                  target="_blank"
+                  rel="noreferrer"
+                  className="w-10 h-10 rounded-lg bg-gray-800 hover:bg-gray-700 flex items-center justify-center transition-colors"
+                  aria-label="Share on Twitter"
+                >
                   <Twitter className="w-4 h-4 text-gray-400" />
-                </button>
-                <button className="w-10 h-10 rounded-lg bg-gray-800 hover:bg-gray-700 flex items-center justify-center transition-colors">
+                </a>
+                <a
+                  href={`https://www.linkedin.com/sharing/share-offsite/?url=${encodedShareUrl}`}
+                  target="_blank"
+                  rel="noreferrer"
+                  className="w-10 h-10 rounded-lg bg-gray-800 hover:bg-gray-700 flex items-center justify-center transition-colors"
+                  aria-label="Share on LinkedIn"
+                >
                   <Linkedin className="w-4 h-4 text-gray-400" />
-                </button>
-                <button className="w-10 h-10 rounded-lg bg-gray-800 hover:bg-gray-700 flex items-center justify-center transition-colors">
+                </a>
+                <a
+                  href={`https://www.facebook.com/sharer/sharer.php?u=${encodedShareUrl}`}
+                  target="_blank"
+                  rel="noreferrer"
+                  className="w-10 h-10 rounded-lg bg-gray-800 hover:bg-gray-700 flex items-center justify-center transition-colors"
+                  aria-label="Share on Facebook"
+                >
                   <Share2 className="w-4 h-4 text-gray-400" />
-                </button>
+                </a>
               </div>
             </div>
           </div>
@@ -196,7 +348,13 @@ export default async function BlogPostPage({ params }: PageProps) {
       <section className="py-8">
         <div className="max-w-5xl mx-auto px-4">
           <div className="rounded-2xl overflow-hidden border border-gray-800">
-            <img src={post.image || "/placeholder.svg"} alt={post.title} className="w-full h-[400px] object-cover" />
+            <Image
+              src={post.image || "/placeholder.svg"}
+              alt={post.title}
+              width={1200}
+              height={800}
+              className="w-full h-[400px] object-cover"
+            />
           </div>
         </div>
       </section>
@@ -215,7 +373,7 @@ export default async function BlogPostPage({ params }: PageProps) {
       <section className="py-16 border-t border-gray-800">
         <div className="max-w-4xl mx-auto px-4 text-center">
           <h2 className="text-3xl font-bold text-white mb-4">Ready to implement these strategies?</h2>
-          <p className="text-gray-400 mb-8">Let's discuss how we can help you achieve similar results.</p>
+          <p className="text-gray-400 mb-8">Let&apos;s discuss how we can help you achieve similar results.</p>
           <Link
             href="/contact"
             className="inline-flex items-center px-8 py-4 rounded-xl bg-gradient-to-r from-indigo-600 to-violet-600 text-white font-semibold hover:shadow-lg hover:shadow-indigo-500/25 transition-all"

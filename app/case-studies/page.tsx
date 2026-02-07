@@ -178,7 +178,7 @@ export default function CaseStudiesPage() {
         <div className="max-w-4xl mx-auto px-4 text-center">
           <h2 className="text-4xl font-bold mb-6">Get Similar Results for Your Business</h2>
           <p className="text-xl text-indigo-100 mb-8 max-w-2xl mx-auto">
-            Whether you're in SaaS, e-commerce, or tech, we have proven strategies to accelerate your growth.
+            Whether you&apos;re in SaaS, e-commerce, or tech, we have proven strategies to accelerate your growth.
           </p>
           <button
             onClick={() => setIsBookingOpen(true)}
