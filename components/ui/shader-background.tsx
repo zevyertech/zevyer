@@ -115,6 +115,15 @@ export const ShaderBackground = ({ className = "" }: ShaderBackgroundProps) => {
     const canvas = canvasRef.current
     if (!canvas) return
     const prefersReducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches
+    const connection = navigator.connection as { saveData?: boolean; downlink?: number } | undefined
+    const deviceMemory = (navigator as { deviceMemory?: number }).deviceMemory ?? 8
+    const coarsePointer = window.matchMedia("(pointer: coarse)").matches
+    const lowPower =
+      prefersReducedMotion ||
+      connection?.saveData ||
+      (connection?.downlink !== undefined && connection.downlink < 2) ||
+      deviceMemory <= 4 ||
+      coarsePointer
 
     const gl = canvas.getContext("webgl")
     if (!gl) {
@@ -166,11 +175,14 @@ export const ShaderBackground = ({ className = "" }: ShaderBackgroundProps) => {
     const resolutionLocation = gl.getUniformLocation(shaderProgram, "iResolution")
     const timeLocation = gl.getUniformLocation(shaderProgram, "iTime")
 
+    const renderScale = lowPower ? 0.6 : 1
     const resizeCanvas = () => {
       const parent = canvas.parentElement
       if (parent) {
-        canvas.width = parent.clientWidth
-        canvas.height = parent.clientHeight
+        canvas.width = Math.max(1, Math.floor(parent.clientWidth * renderScale))
+        canvas.height = Math.max(1, Math.floor(parent.clientHeight * renderScale))
+        canvas.style.width = `${parent.clientWidth}px`
+        canvas.style.height = `${parent.clientHeight}px`
         gl.viewport(0, 0, canvas.width, canvas.height)
       }
     }
@@ -186,9 +198,18 @@ export const ShaderBackground = ({ className = "" }: ShaderBackgroundProps) => {
     let rafPending = false
     let isVisible = true
     let isInView = true
+    let lastFrame = 0
+    const targetFrameMs = 1000 / 24
 
     const render = () => {
-      const currentTime = (Date.now() - startTime) / 1000
+      const now = Date.now()
+      if (now - lastFrame < targetFrameMs) {
+        rafPending = false
+        scheduleRender()
+        return
+      }
+      lastFrame = now
+      const currentTime = (now - startTime) / 1000
 
       gl.clearColor(0.0, 0.0, 0.0, 1.0)
       gl.clear(gl.COLOR_BUFFER_BIT)
@@ -201,7 +222,7 @@ export const ShaderBackground = ({ className = "" }: ShaderBackgroundProps) => {
       gl.enableVertexAttribArray(vertexPosition)
 
       gl.drawArrays(gl.TRIANGLE_STRIP, 0, 4)
-      if (!prefersReducedMotion && isVisible && isInView) {
+      if (!lowPower && isVisible && isInView) {
         rafPending = false
         animationId = requestAnimationFrame(render)
       } else {
@@ -210,7 +231,7 @@ export const ShaderBackground = ({ className = "" }: ShaderBackgroundProps) => {
     }
 
     const scheduleRender = () => {
-      if (prefersReducedMotion || rafPending) return
+      if (lowPower || rafPending) return
       rafPending = true
       animationId = requestAnimationFrame(render)
     }
@@ -228,6 +249,14 @@ export const ShaderBackground = ({ className = "" }: ShaderBackgroundProps) => {
       { root: null, threshold: 0.1 },
     )
     observer.observe(canvas)
+
+    if (lowPower) {
+      render()
+      return () => {
+        window.removeEventListener("resize", resizeCanvas)
+        cancelAnimationFrame(animationId)
+      }
+    }
 
     scheduleRender()
 

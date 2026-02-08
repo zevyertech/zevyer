@@ -99,7 +99,16 @@ export const Plasma: React.FC<PlasmaProps> = React.memo(({
     if (!containerRef.current || typeof window === "undefined") return
     const container = containerRef.current
     const prefersReducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches
-    if (prefersReducedMotion) {
+    const connection = navigator.connection as { saveData?: boolean; downlink?: number } | undefined
+    const deviceMemory = (navigator as { deviceMemory?: number }).deviceMemory ?? 8
+    const coarsePointer = window.matchMedia("(pointer: coarse)").matches
+    const lowPower =
+      prefersReducedMotion ||
+      connection?.saveData ||
+      (connection?.downlink !== undefined && connection.downlink < 2) ||
+      deviceMemory <= 4 ||
+      coarsePointer
+    if (lowPower) {
       setIsReady(true)
       return
     }
@@ -112,7 +121,7 @@ export const Plasma: React.FC<PlasmaProps> = React.memo(({
         webgl: 2,
         alpha: true,
         antialias: false,
-        dpr: Math.min(window.devicePixelRatio || 1, 2),
+        dpr: Math.min(window.devicePixelRatio || 1, 1.5),
       })
       const gl = renderer.gl
       const canvas = gl.canvas as HTMLCanvasElement
@@ -161,6 +170,8 @@ export const Plasma: React.FC<PlasmaProps> = React.memo(({
       let rafPending = false
       let isVisible = true
       let isInView = true
+      let lastFrame = 0
+      const targetFrameMs = 1000 / 24
       const t0 = performance.now()
       const loop = (t: number) => {
         const timeUniform = program.uniforms.iTime as { value: number }
@@ -168,6 +179,12 @@ export const Plasma: React.FC<PlasmaProps> = React.memo(({
           rafPending = false
           return
         }
+        if (t - lastFrame < targetFrameMs) {
+          rafPending = false
+          scheduleFrame()
+          return
+        }
+        lastFrame = t
         timeUniform.value = (t - t0) * 0.001
         renderer.render({ scene: mesh })
         rafPending = false
