@@ -114,6 +114,7 @@ export const ShaderBackground = ({ className = "" }: ShaderBackgroundProps) => {
   useEffect(() => {
     const canvas = canvasRef.current
     if (!canvas) return
+    const prefersReducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches
 
     const gl = canvas.getContext("webgl")
     if (!gl) {
@@ -181,7 +182,10 @@ export const ShaderBackground = ({ className = "" }: ShaderBackgroundProps) => {
     activateProgram(shaderProgram)
 
     const startTime = Date.now()
-    let animationId: number
+    let animationId = 0
+    let rafPending = false
+    let isVisible = true
+    let isInView = true
 
     const render = () => {
       const currentTime = (Date.now() - startTime) / 1000
@@ -197,13 +201,40 @@ export const ShaderBackground = ({ className = "" }: ShaderBackgroundProps) => {
       gl.enableVertexAttribArray(vertexPosition)
 
       gl.drawArrays(gl.TRIANGLE_STRIP, 0, 4)
+      if (!prefersReducedMotion && isVisible && isInView) {
+        rafPending = false
+        animationId = requestAnimationFrame(render)
+      } else {
+        rafPending = false
+      }
+    }
+
+    const scheduleRender = () => {
+      if (prefersReducedMotion || rafPending) return
+      rafPending = true
       animationId = requestAnimationFrame(render)
     }
 
-    animationId = requestAnimationFrame(render)
+    const handleVisibility = () => {
+      isVisible = document.visibilityState === "visible"
+      if (isVisible) scheduleRender()
+    }
+    document.addEventListener("visibilitychange", handleVisibility)
+    const observer = new IntersectionObserver(
+      ([entry]) => {
+        isInView = entry.isIntersecting
+        if (isInView) scheduleRender()
+      },
+      { root: null, threshold: 0.1 },
+    )
+    observer.observe(canvas)
+
+    scheduleRender()
 
     return () => {
       window.removeEventListener("resize", resizeCanvas)
+      document.removeEventListener("visibilitychange", handleVisibility)
+      observer.disconnect()
       cancelAnimationFrame(animationId)
     }
   }, [fsSource, vsSource])

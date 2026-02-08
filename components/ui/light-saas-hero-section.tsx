@@ -98,6 +98,11 @@ export const Plasma: React.FC<PlasmaProps> = React.memo(({
   useEffect(() => {
     if (!containerRef.current || typeof window === "undefined") return
     const container = containerRef.current
+    const prefersReducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches
+    if (prefersReducedMotion) {
+      setIsReady(true)
+      return
+    }
     
     try {
       const useCustomColor = color ? 1.0 : 0.0
@@ -153,20 +158,48 @@ export const Plasma: React.FC<PlasmaProps> = React.memo(({
       setSize()
       let raf = 0
       let readyFrame = 0
+      let rafPending = false
+      let isVisible = true
+      let isInView = true
       const t0 = performance.now()
       const loop = (t: number) => {
         const timeUniform = program.uniforms.iTime as { value: number }
+        if (!isVisible || !isInView) {
+          rafPending = false
+          return
+        }
         timeUniform.value = (t - t0) * 0.001
         renderer.render({ scene: mesh })
+        rafPending = false
+        scheduleFrame()
+      }
+      const scheduleFrame = () => {
+        if (rafPending) return
+        rafPending = true
         raf = requestAnimationFrame(loop)
       }
-      raf = requestAnimationFrame(loop)
+      scheduleFrame()
       readyFrame = window.requestAnimationFrame(() => setIsReady(true))
+      const handleVisibility = () => {
+        isVisible = document.visibilityState === "visible"
+        if (isVisible) scheduleFrame()
+      }
+      document.addEventListener("visibilitychange", handleVisibility)
+      const observer = new IntersectionObserver(
+        ([entry]) => {
+          isInView = entry.isIntersecting
+          if (isInView) scheduleFrame()
+        },
+        { root: null, threshold: 0.1 },
+      )
+      observer.observe(container)
       return () => {
         cancelAnimationFrame(raf)
         if (readyFrame) window.cancelAnimationFrame(readyFrame)
         ro.disconnect()
         if (mouseInteractive) container.removeEventListener("mousemove", handleMouseMove)
+        document.removeEventListener("visibilitychange", handleVisibility)
+        observer.disconnect()
         try {
           container.removeChild(canvas)
         } catch {}
