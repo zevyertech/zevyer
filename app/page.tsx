@@ -257,43 +257,50 @@ export default function Home() {
                 </button>
               </div>
               <div
-                className="mt-10 rounded-2xl bg-white/10 p-4 backdrop-blur"
+                className="mt-10 rounded-2xl border border-white/10 bg-white/10 p-5 backdrop-blur"
                 onMouseEnter={() => setIsBannerPaused(true)}
                 onMouseLeave={() => setIsBannerPaused(false)}
               >
-                <div className="flex flex-wrap items-center justify-between gap-4">
+                <div className="grid gap-6 md:grid-cols-[1.1fr_0.9fr]">
                   <div>
                     <p className="text-xs uppercase tracking-widest text-white/70">
                       {serviceBanners[activeBanner].label}
                     </p>
-                    <p className="mt-2 text-base font-semibold">{serviceBanners[activeBanner].title}</p>
+                    <h3 className="mt-2 text-lg font-semibold">{serviceBanners[activeBanner].title}</h3>
+                    <div className="mt-4 flex flex-wrap items-center gap-3 text-xs text-white/80">
+                      {serviceBanners[activeBanner].stats.map((stat) => (
+                        <span key={stat} className="rounded-full bg-white/10 px-3 py-1">
+                          {stat}
+                        </span>
+                      ))}
+                    </div>
+                    <Link
+                      href={serviceBanners[activeBanner].href}
+                      className="mt-4 inline-flex items-center gap-2 rounded-full bg-[#E12836] px-4 py-2 text-xs font-semibold text-[#FFFFFB]"
+                    >
+                      {serviceBanners[activeBanner].cta} <ArrowRight className="h-3 w-3" />
+                    </Link>
                   </div>
-                  <Link
-                    href={serviceBanners[activeBanner].href}
-                    className="inline-flex items-center gap-2 rounded-full bg-[#FFFFFB] px-4 py-2 text-xs font-semibold text-[#083EFD]"
-                  >
-                    {serviceBanners[activeBanner].cta} <ArrowRight className="h-3 w-3" />
-                  </Link>
-                </div>
-                <div className="mt-4 grid gap-4 md:grid-cols-[1fr_auto]">
-                  <div className="grid gap-2 md:grid-cols-3">
-                    {serviceBanners[activeBanner].stats.map((stat) => (
-                      <div key={stat} className="rounded-xl bg-white/10 px-3 py-2 text-xs">
-                        {stat}
-                      </div>
-                    ))}
+                  <div className="rounded-2xl bg-white/90 p-4 text-slate-700 shadow-lg">
+                    <div className="flex items-center justify-between text-xs text-slate-500">
+                      <span>Analytics</span>
+                      <span className="text-[#E12836]">{serviceBanners[activeBanner].metricValue}</span>
+                    </div>
+                    <div className="mt-3 grid grid-cols-3 gap-2">
+                      {serviceBanners[activeBanner].bars.map((color, idx) => (
+                        <div key={`${color}-${idx}`} className="rounded-lg bg-slate-100 px-2 py-3 text-center">
+                          <div className="h-8 rounded-md" style={{ backgroundColor: color, opacity: 0.85 }} />
+                          <p className="mt-1 text-[10px] text-slate-500">Q{idx + 1}</p>
+                        </div>
+                      ))}
+                    </div>
+                    <div className="mt-3 flex items-center gap-2 text-xs text-slate-500">
+                      <span className="h-2 w-2 rounded-full bg-[#083EFD]" />
+                      {serviceBanners[activeBanner].metricLabel}
+                    </div>
                   </div>
-                  <div className="flex items-center gap-3 rounded-xl bg-white/10 px-3 py-2 text-xs">
-                    <span className="text-white/70">{serviceBanners[activeBanner].metricLabel}</span>
-                    <span className="text-sm font-semibold">{serviceBanners[activeBanner].metricValue}</span>
-                  </div>
                 </div>
-                <div className="mt-3 grid grid-cols-3 gap-2">
-                  {serviceBanners[activeBanner].bars.map((color, idx) => (
-                    <div key={`${color}-${idx}`} className="h-2 rounded-full" style={{ backgroundColor: color }} />
-                  ))}
-                </div>
-                <div className="mt-3 flex gap-2">
+                <div className="mt-4 flex gap-2">
                   {serviceBanners.map((_, idx) => (
                     <span
                       key={idx}
