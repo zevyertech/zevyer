@@ -15,7 +15,9 @@ export function Header() {
       <nav className="fixed top-0 left-0 right-0 z-50">
         <div
           className={`mx-auto flex w-full max-w-6xl items-center justify-between px-6 py-5 ${
-            isHome ? "text-white" : "rounded-full bg-white/95 text-gray-900 shadow-md backdrop-blur"
+            isHome
+              ? "text-white border border-white/20 rounded-full"
+              : "rounded-full bg-white/95 text-gray-900 shadow-md backdrop-blur border border-slate-200"
           }`}
         >
           <Link href="/" className="flex items-center hover:opacity-80 transition-opacity">

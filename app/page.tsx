@@ -43,13 +43,52 @@ export default function Home() {
     setIsBookingOpen(true)
   }
 
+  const serviceBanners = [
+    {
+      label: "Performance Marketing",
+      title: "Scale paid channels with measurable ROI.",
+      cta: "Explore Performance",
+      href: "/services/performance-marketing",
+    },
+    {
+      label: "Branding & Creative",
+      title: "Build a brand that converts and stands out.",
+      cta: "See Branding",
+      href: "/services/branding-creative",
+    },
+    {
+      label: "Web & App Development",
+      title: "Ship fast, secure products that scale.",
+      cta: "View Development",
+      href: "/services/custom-development",
+    },
+    {
+      label: "SEO & Content",
+      title: "Grow organic traffic that compounds.",
+      cta: "Boost SEO",
+      href: "/services/seo-and-content",
+    },
+    {
+      label: "Marketing Consultation",
+      title: "Clarity and execution for growth strategy.",
+      cta: "Book Consultation",
+      href: "/services/marketing-consultation",
+    },
+    {
+      label: "AI & Automation",
+      title: "Automate workflows and customer support.",
+      cta: "Explore AI",
+      href: "/services/ai-automation",
+    },
+  ]
+
   useEffect(() => {
     if (isBannerPaused) return
     const timer = window.setInterval(() => {
-      setActiveBanner((prev) => (prev + 1) % 3)
+      setActiveBanner((prev) => (prev + 1) % serviceBanners.length)
     }, 3000)
     return () => window.clearInterval(timer)
-  }, [isBannerPaused])
+  }, [isBannerPaused, serviceBanners.length])
 
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault()
@@ -150,39 +189,9 @@ export default function Home() {
     },
   ]
 
-  const serviceBanners = [
-    {
-      label: "Cloud Infrastructure",
-      title: "Scale faster with reliable cloud architecture.",
-      cta: "Explore Cloud Solutions",
-      href: "/services/performance-marketing",
-    },
-    {
-      label: "Software Development",
-      title: "Ship modern products built for growth.",
-      cta: "See Development Services",
-      href: "/services/custom-development",
-    },
-    {
-      label: "Data Analytics",
-      title: "Turn data into decisions that drive revenue.",
-      cta: "Unlock Analytics",
-      href: "/services/ai-automation",
-    },
-  ]
-
   return (
     <main className="min-h-screen bg-[#FFFFFB] text-slate-900">
       <BookingPopup isOpen={isBookingOpen} onClose={() => setIsBookingOpen(false)} />
-
-      <div className="fixed top-0 left-0 right-0 z-40 bg-[#E12836] text-[#FFFFFB]">
-        <div className="mx-auto flex max-w-6xl items-center justify-between px-6 py-2 text-sm font-semibold">
-          <span>Limited slots open for Q2 growth partners.</span>
-          <Link href="/contact" className="inline-flex items-center gap-2">
-            Book a Strategy Call <ArrowRight className="h-4 w-4" />
-          </Link>
-        </div>
-      </div>
 
       <section className="relative overflow-hidden bg-[#083EFD] text-[#FFFFFB]">
         <div className="absolute inset-0 opacity-25">
@@ -198,7 +207,7 @@ export default function Home() {
         <div className="absolute -top-24 right-10 h-64 w-64 rounded-full bg-white/15 blur-3xl" />
         <div className="absolute -bottom-24 left-10 h-64 w-64 rounded-full bg-[#E12836]/25 blur-3xl" />
 
-        <div className="relative z-10 mx-auto max-w-6xl px-6 pt-40 pb-24">
+        <div className="relative z-10 mx-auto max-w-6xl px-6 pt-32 pb-24">
           <div className="grid items-center gap-12 lg:grid-cols-[1.1fr_0.9fr]">
             <div>
               <div className="inline-flex items-center gap-2 rounded-full bg-white/10 px-4 py-1 text-sm font-semibold">
