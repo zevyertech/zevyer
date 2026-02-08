@@ -8,6 +8,7 @@ interface ShaderBackgroundProps {
 
 export const ShaderBackground = ({ className = "" }: ShaderBackgroundProps) => {
   const canvasRef = useRef<HTMLCanvasElement>(null)
+  const enableAnimations = process.env.NEXT_PUBLIC_ENABLE_ANIMATIONS === "true"
 
   const vsSource = `
     attribute vec4 aVertexPosition;
@@ -124,6 +125,7 @@ export const ShaderBackground = ({ className = "" }: ShaderBackgroundProps) => {
       (connection?.downlink !== undefined && connection.downlink < 2) ||
       deviceMemory <= 4 ||
       coarsePointer
+    if (!enableAnimations || lowPower) return
 
     const gl = canvas.getContext("webgl")
     if (!gl) {
@@ -266,7 +268,11 @@ export const ShaderBackground = ({ className = "" }: ShaderBackgroundProps) => {
       observer.disconnect()
       cancelAnimationFrame(animationId)
     }
-  }, [fsSource, vsSource])
+  }, [fsSource, vsSource, enableAnimations])
+
+  if (!enableAnimations) {
+    return <div className={`w-full h-full bg-gradient-to-br from-indigo-900/40 via-indigo-800/20 to-transparent ${className}`} />
+  }
 
   return <canvas ref={canvasRef} className={`w-full h-full ${className}`} />
 }

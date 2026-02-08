@@ -92,10 +92,15 @@ export const Plasma: React.FC<PlasmaProps> = React.memo(({
   opacity = 1,
   mouseInteractive = false,
 }) => {
+  const enableAnimations = process.env.NEXT_PUBLIC_ENABLE_ANIMATIONS === "true"
   const containerRef = useRef<HTMLDivElement | null>(null)
   const [isReady, setIsReady] = useState(false)
 
   useEffect(() => {
+    if (!enableAnimations) {
+      setIsReady(true)
+      return
+    }
     if (!containerRef.current || typeof window === "undefined") return
     const container = containerRef.current
     const prefersReducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches
@@ -224,12 +229,14 @@ export const Plasma: React.FC<PlasmaProps> = React.memo(({
     } catch (error) {
       console.error("Plasma component error:", error)
     }
-  }, [color, speed, direction, scale, opacity, mouseInteractive])
+  }, [color, speed, direction, scale, opacity, mouseInteractive, enableAnimations])
   
   return (
     <div ref={containerRef} className="w-full h-full relative overflow-hidden">
-      {!isReady && (
-        <div className="absolute inset-0 bg-gradient-to-br from-indigo-50 to-white animate-pulse" />
+      {!enableAnimations ? (
+        <div className="absolute inset-0 bg-gradient-to-br from-indigo-100 via-white to-white" />
+      ) : (
+        !isReady && <div className="absolute inset-0 bg-gradient-to-br from-indigo-50 to-white animate-pulse" />
       )}
     </div>
   )
