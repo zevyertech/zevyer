@@ -49,36 +49,60 @@ export default function Home() {
       title: "Scale paid channels with measurable ROI.",
       cta: "Explore Performance",
       href: "/services/performance-marketing",
+      metricLabel: "ROAS",
+      metricValue: "+3.2x",
+      stats: ["CAC ↓ 38%", "CTR ↑ 41%", "Leads ↑ 62%"],
+      bars: ["#E12836", "#083EFD", "#E12836"],
     },
     {
       label: "Branding & Creative",
       title: "Build a brand that converts and stands out.",
       cta: "See Branding",
       href: "/services/branding-creative",
+      metricLabel: "Engagement",
+      metricValue: "+48%",
+      stats: ["Recall ↑ 29%", "CTR ↑ 33%", "Conv ↑ 21%"],
+      bars: ["#083EFD", "#E12836", "#083EFD"],
     },
     {
       label: "Web & App Development",
       title: "Ship fast, secure products that scale.",
       cta: "View Development",
       href: "/services/custom-development",
+      metricLabel: "Speed",
+      metricValue: "1.2s",
+      stats: ["Uptime 99.9%", "INP ↓ 42%", "LCP ↓ 31%"],
+      bars: ["#083EFD", "#083EFD", "#E12836"],
     },
     {
       label: "SEO & Content",
       title: "Grow organic traffic that compounds.",
       cta: "Boost SEO",
       href: "/services/seo-and-content",
+      metricLabel: "Organic",
+      metricValue: "+2.4x",
+      stats: ["Keywords ↑ 58%", "Clicks ↑ 74%", "Leads ↑ 39%"],
+      bars: ["#E12836", "#083EFD", "#083EFD"],
     },
     {
       label: "Marketing Consultation",
       title: "Clarity and execution for growth strategy.",
       cta: "Book Consultation",
       href: "/services/marketing-consultation",
+      metricLabel: "Pipeline",
+      metricValue: "+27%",
+      stats: ["CAC ↓ 22%", "MQL ↑ 35%", "Payback ↓ 18%"],
+      bars: ["#083EFD", "#E12836", "#083EFD"],
     },
     {
       label: "AI & Automation",
       title: "Automate workflows and customer support.",
       cta: "Explore AI",
       href: "/services/ai-automation",
+      metricLabel: "Hours Saved",
+      metricValue: "200+",
+      stats: ["Tickets ↓ 44%", "CSAT ↑ 19%", "Ops ↓ 31%"],
+      bars: ["#E12836", "#083EFD", "#E12836"],
     },
   ]
 
@@ -237,9 +261,11 @@ export default function Home() {
                 onMouseEnter={() => setIsBannerPaused(true)}
                 onMouseLeave={() => setIsBannerPaused(false)}
               >
-                <div className="flex items-center justify-between gap-4">
+                <div className="flex flex-wrap items-center justify-between gap-4">
                   <div>
-                    <p className="text-xs uppercase tracking-widest text-white/70">{serviceBanners[activeBanner].label}</p>
+                    <p className="text-xs uppercase tracking-widest text-white/70">
+                      {serviceBanners[activeBanner].label}
+                    </p>
                     <p className="mt-2 text-base font-semibold">{serviceBanners[activeBanner].title}</p>
                   </div>
                   <Link
@@ -248,6 +274,24 @@ export default function Home() {
                   >
                     {serviceBanners[activeBanner].cta} <ArrowRight className="h-3 w-3" />
                   </Link>
+                </div>
+                <div className="mt-4 grid gap-4 md:grid-cols-[1fr_auto]">
+                  <div className="grid gap-2 md:grid-cols-3">
+                    {serviceBanners[activeBanner].stats.map((stat) => (
+                      <div key={stat} className="rounded-xl bg-white/10 px-3 py-2 text-xs">
+                        {stat}
+                      </div>
+                    ))}
+                  </div>
+                  <div className="flex items-center gap-3 rounded-xl bg-white/10 px-3 py-2 text-xs">
+                    <span className="text-white/70">{serviceBanners[activeBanner].metricLabel}</span>
+                    <span className="text-sm font-semibold">{serviceBanners[activeBanner].metricValue}</span>
+                  </div>
+                </div>
+                <div className="mt-3 grid grid-cols-3 gap-2">
+                  {serviceBanners[activeBanner].bars.map((color, idx) => (
+                    <div key={`${color}-${idx}`} className="h-2 rounded-full" style={{ backgroundColor: color }} />
+                  ))}
                 </div>
                 <div className="mt-3 flex gap-2">
                   {serviceBanners.map((_, idx) => (

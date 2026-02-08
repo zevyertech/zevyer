@@ -13,13 +13,7 @@ export function Header() {
   return (
     <>
       <nav className="fixed top-0 left-0 right-0 z-50">
-        <div
-          className={`mx-auto flex w-full max-w-6xl items-center justify-between px-6 py-5 ${
-            isHome
-              ? "text-white border border-white/20 rounded-full"
-              : "rounded-full bg-white/95 text-gray-900 shadow-md backdrop-blur border border-slate-200"
-          }`}
-        >
+        <div className="mx-auto flex w-full max-w-6xl items-center justify-between rounded-full border border-slate-200 bg-white/95 px-6 py-5 text-gray-900 shadow-md backdrop-blur">
           <Link href="/" className="flex items-center hover:opacity-80 transition-opacity">
             <Image src="/zevyer-logo.svg" alt="Zevyer Logo" width={28} height={28} className="h-7 w-7" />
             <span className="ml-2 text-sm font-semibold">Zevyer</span>
@@ -57,17 +51,13 @@ export function Header() {
           >
             <div className="flex flex-col gap-1.5">
               <div
-                className={`w-5 h-0.5 ${isHome ? "bg-white" : "bg-gray-900"} transition-all ${isMenuOpen ? "rotate-45 translate-y-2" : ""}`}
+                className={`w-5 h-0.5 bg-gray-900 transition-all ${isMenuOpen ? "rotate-45 translate-y-2" : ""}`}
               ></div>
               <div
-                className={`w-5 h-0.5 ${isHome ? "bg-white" : "bg-gray-900"} transition-all ${
-                  isMenuOpen ? "opacity-0" : ""
-                }`}
+                className={`w-5 h-0.5 bg-gray-900 transition-all ${isMenuOpen ? "opacity-0" : ""}`}
               ></div>
               <div
-                className={`w-5 h-0.5 ${isHome ? "bg-white" : "bg-gray-900"} transition-all ${
-                  isMenuOpen ? "-rotate-45 -translate-y-2" : ""
-                }`}
+                className={`w-5 h-0.5 bg-gray-900 transition-all ${isMenuOpen ? "-rotate-45 -translate-y-2" : ""}`}
               ></div>
             </div>
           </button>
