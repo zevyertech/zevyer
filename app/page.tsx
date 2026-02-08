@@ -1,7 +1,7 @@
 "use client"
 
 import type React from "react"
-import { useState, useRef, lazy, Suspense } from "react"
+import { useState, useRef, useEffect, lazy, Suspense } from "react"
 import Link from "next/link"
 import {
   ArrowRight,
@@ -29,6 +29,8 @@ export default function Home() {
   const [isSubmitting, setIsSubmitting] = useState(false)
   const [error, setError] = useState<string | null>(null)
   const formRef = useRef<HTMLDivElement>(null)
+  const [activeBanner, setActiveBanner] = useState(0)
+  const [isBannerPaused, setIsBannerPaused] = useState(false)
   const [formData, setFormData] = useState({
     name: "",
     email: "",
@@ -40,6 +42,14 @@ export default function Home() {
   const handleBookClick = () => {
     setIsBookingOpen(true)
   }
+
+  useEffect(() => {
+    if (isBannerPaused) return
+    const timer = window.setInterval(() => {
+      setActiveBanner((prev) => (prev + 1) % 3)
+    }, 3000)
+    return () => window.clearInterval(timer)
+  }, [isBannerPaused])
 
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault()
@@ -140,9 +150,39 @@ export default function Home() {
     },
   ]
 
+  const serviceBanners = [
+    {
+      label: "Cloud Infrastructure",
+      title: "Scale faster with reliable cloud architecture.",
+      cta: "Explore Cloud Solutions",
+      href: "/services/performance-marketing",
+    },
+    {
+      label: "Software Development",
+      title: "Ship modern products built for growth.",
+      cta: "See Development Services",
+      href: "/services/custom-development",
+    },
+    {
+      label: "Data Analytics",
+      title: "Turn data into decisions that drive revenue.",
+      cta: "Unlock Analytics",
+      href: "/services/ai-automation",
+    },
+  ]
+
   return (
     <main className="min-h-screen bg-[#FFFFFB] text-slate-900">
       <BookingPopup isOpen={isBookingOpen} onClose={() => setIsBookingOpen(false)} />
+
+      <div className="fixed top-0 left-0 right-0 z-40 bg-[#E12836] text-[#FFFFFB]">
+        <div className="mx-auto flex max-w-6xl items-center justify-between px-6 py-2 text-sm font-semibold">
+          <span>Limited slots open for Q2 growth partners.</span>
+          <Link href="/contact" className="inline-flex items-center gap-2">
+            Book a Strategy Call <ArrowRight className="h-4 w-4" />
+          </Link>
+        </div>
+      </div>
 
       <section className="relative overflow-hidden bg-[#083EFD] text-[#FFFFFB]">
         <div className="absolute inset-0 opacity-25">
@@ -158,7 +198,7 @@ export default function Home() {
         <div className="absolute -top-24 right-10 h-64 w-64 rounded-full bg-white/15 blur-3xl" />
         <div className="absolute -bottom-24 left-10 h-64 w-64 rounded-full bg-[#E12836]/25 blur-3xl" />
 
-        <div className="relative z-10 mx-auto max-w-6xl px-6 pt-32 pb-24">
+        <div className="relative z-10 mx-auto max-w-6xl px-6 pt-40 pb-24">
           <div className="grid items-center gap-12 lg:grid-cols-[1.1fr_0.9fr]">
             <div>
               <div className="inline-flex items-center gap-2 rounded-full bg-white/10 px-4 py-1 text-sm font-semibold">
@@ -176,12 +216,38 @@ export default function Home() {
                   href="/contact"
                   className="inline-flex items-center gap-2 rounded-full bg-[#E12836] px-6 py-3 text-sm font-semibold text-[#FFFFFB] shadow-lg"
                 >
-                  Get Started <ArrowRight className="h-4 w-4" />
+                  Book a Free Strategy Call <ArrowRight className="h-4 w-4" />
                 </Link>
                 <button className="inline-flex items-center gap-2 rounded-full border border-white/40 px-6 py-3 text-sm font-semibold text-white">
                   <PlayCircle className="h-4 w-4" />
                   Watch Demo
                 </button>
+              </div>
+              <div
+                className="mt-10 rounded-2xl bg-white/10 p-4 backdrop-blur"
+                onMouseEnter={() => setIsBannerPaused(true)}
+                onMouseLeave={() => setIsBannerPaused(false)}
+              >
+                <div className="flex items-center justify-between gap-4">
+                  <div>
+                    <p className="text-xs uppercase tracking-widest text-white/70">{serviceBanners[activeBanner].label}</p>
+                    <p className="mt-2 text-base font-semibold">{serviceBanners[activeBanner].title}</p>
+                  </div>
+                  <Link
+                    href={serviceBanners[activeBanner].href}
+                    className="inline-flex items-center gap-2 rounded-full bg-[#FFFFFB] px-4 py-2 text-xs font-semibold text-[#083EFD]"
+                  >
+                    {serviceBanners[activeBanner].cta} <ArrowRight className="h-3 w-3" />
+                  </Link>
+                </div>
+                <div className="mt-3 flex gap-2">
+                  {serviceBanners.map((_, idx) => (
+                    <span
+                      key={idx}
+                      className={`h-1.5 w-6 rounded-full ${idx === activeBanner ? "bg-[#E12836]" : "bg-white/30"}`}
+                    />
+                  ))}
+                </div>
               </div>
             </div>
 
@@ -417,12 +483,14 @@ export default function Home() {
       </Suspense>
 
       <Suspense fallback={<div className="py-16" />}>
-        <FAQSection
-          title="Common Questions"
-          subtitle="Everything you need to know about working with Zevyer."
-          introLabel="Zevyer FAQ"
-          faqs={faqItems}
-        />
+        <div className="bg-[#083EFD]/10">
+          <FAQSection
+            title="Common Questions"
+            subtitle="Everything you need to know about working with Zevyer."
+            introLabel="Zevyer FAQ"
+            faqs={faqItems}
+          />
+        </div>
       </Suspense>
 
       <section className="bg-[#083EFD] py-16 text-[#FFFFFB]">
