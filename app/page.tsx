@@ -6,9 +6,7 @@ import Link from "next/link"
 import {
   ArrowRight,
   CheckCircle2,
-  PlayCircle,
   Sparkles,
-  Star,
   BarChart3,
   Code2,
   Zap,
@@ -237,99 +235,37 @@ export default function Home() {
         <div className="absolute -top-24 right-10 h-64 w-64 rounded-full bg-white/15 blur-3xl" />
         <div className="absolute -bottom-24 left-10 h-64 w-64 rounded-full bg-[#E12836]/25 blur-3xl" />
 
-        <div className="relative z-10 mx-auto max-w-6xl px-6 pt-32 pb-24">
-          <div className="grid items-center gap-12 lg:grid-cols-[1.1fr_0.9fr]">
+        <div className="relative z-10 mx-auto max-w-5xl px-6 pt-28 pb-24">
+          <div
+            className="rounded-2xl border border-white/10 bg-white/10 p-6 backdrop-blur"
+            onMouseEnter={() => setIsBannerPaused(true)}
+            onMouseLeave={() => setIsBannerPaused(false)}
+          >
             <div>
-              <div className="inline-flex items-center gap-2 rounded-full bg-white/10 px-4 py-1 text-sm font-semibold">
-                <Star className="h-4 w-4 text-[#FFFFFB]" />
-                DIGITAL HAS EVOLVED
+              <p className="text-xs uppercase tracking-widest text-white/70">{serviceBanners[activeBanner].label}</p>
+              <h3 className="mt-2 text-lg font-semibold">{serviceBanners[activeBanner].heading}</h3>
+              <p className="mt-2 text-sm text-white/80">{serviceBanners[activeBanner].title}</p>
+              <div className="mt-4 flex flex-wrap items-center gap-3 text-xs text-white/80">
+                {serviceBanners[activeBanner].stats.map((stat) => (
+                  <span key={stat} className="rounded-full bg-white/10 px-3 py-1">
+                    {stat}
+                  </span>
+                ))}
               </div>
-              <h1 className="mt-6 text-4xl font-bold leading-tight md:text-5xl">
-                Empowering Your <span className="text-[#FFFFFB]">Tech Solutions</span>
-              </h1>
-              <p className="mt-5 max-w-xl text-lg text-white/80">
-                Innovative solutions to drive your business forward.
-              </p>
-              <div className="mt-8 flex flex-wrap items-center gap-4">
-                <Link
-                  href="/contact"
-                  className="inline-flex items-center gap-2 rounded-full bg-[#E12836] px-6 py-3 text-sm font-semibold text-[#FFFFFB] shadow-lg"
-                >
-                  Book a Free Strategy Call <ArrowRight className="h-4 w-4" />
-                </Link>
-                <button className="inline-flex items-center gap-2 rounded-full border border-white/40 px-6 py-3 text-sm font-semibold text-white">
-                  <PlayCircle className="h-4 w-4" />
-                  Watch Demo
-                </button>
-              </div>
-              <div
-                className="mt-10 rounded-2xl border border-white/10 bg-white/10 p-5 backdrop-blur"
-                onMouseEnter={() => setIsBannerPaused(true)}
-                onMouseLeave={() => setIsBannerPaused(false)}
+              <Link
+                href={serviceBanners[activeBanner].href}
+                className="mt-4 inline-flex items-center gap-2 rounded-full bg-[#E12836] px-4 py-2 text-xs font-semibold text-[#FFFFFB]"
               >
-                <p className="text-xs uppercase tracking-widest text-white/70">{serviceBanners[activeBanner].label}</p>
-                <h3 className="mt-2 text-lg font-semibold">{serviceBanners[activeBanner].heading}</h3>
-                <p className="mt-2 text-sm text-white/80">{serviceBanners[activeBanner].title}</p>
-                <div className="mt-4 flex flex-wrap items-center gap-3 text-xs text-white/80">
-                  {serviceBanners[activeBanner].stats.map((stat) => (
-                    <span key={stat} className="rounded-full bg-white/10 px-3 py-1">
-                      {stat}
-                    </span>
-                  ))}
-                </div>
-                <div className="mt-4 flex items-center gap-3 rounded-xl bg-white/10 px-3 py-2 text-xs">
-                  <span className="text-white/70">{serviceBanners[activeBanner].metricLabel}</span>
-                  <span className="text-sm font-semibold">{serviceBanners[activeBanner].metricValue}</span>
-                </div>
-                <Link
-                  href={serviceBanners[activeBanner].href}
-                  className="mt-4 inline-flex items-center gap-2 rounded-full bg-[#E12836] px-4 py-2 text-xs font-semibold text-[#FFFFFB]"
-                >
-                  {serviceBanners[activeBanner].cta} <ArrowRight className="h-3 w-3" />
-                </Link>
-                <div className="mt-4 flex gap-2">
-                  {serviceBanners.map((_, idx) => (
-                    <span
-                      key={idx}
-                      className={`h-1.5 w-6 rounded-full ${idx === activeBanner ? "bg-[#E12836]" : "bg-white/30"}`}
-                    />
-                  ))}
-                </div>
-              </div>
+                {serviceBanners[activeBanner].cta} <ArrowRight className="h-3 w-3" />
+              </Link>
             </div>
-
-            <div className="relative">
-              <div className="rounded-3xl bg-white/10 p-6 backdrop-blur">
-                <div className="rounded-2xl bg-[#FFFFFB] p-5 text-slate-800 shadow-lg">
-                  <div className="flex items-center justify-between text-xs text-slate-500">
-                    <span>Analytics</span>
-                    <span className="text-[#E12836]">+24%</span>
-                  </div>
-                  <div className="mt-4 grid grid-cols-3 gap-2">
-                    {["#083EFD", "#E12836", "#083EFD"].map((color, idx) => (
-                      <div key={`${color}-${idx}`} className="rounded-lg bg-slate-100 px-2 py-4 text-center">
-                        <div className="h-10 rounded-md" style={{ backgroundColor: color, opacity: 0.85 }} />
-                        <p className="mt-2 text-xs text-slate-500">Q{idx + 1}</p>
-                      </div>
-                    ))}
-                  </div>
-                  <div className="mt-5 flex items-center gap-3">
-                    <div className="h-9 w-9 rounded-full bg-[#083EFD]/20" />
-                    <div>
-                      <p className="text-sm font-semibold text-slate-700">Live dashboards</p>
-                      <p className="text-xs text-slate-500">Real-time insights</p>
-                    </div>
-                  </div>
-                </div>
-                <div className="mt-6 grid grid-cols-3 gap-4 text-center text-white">
-                  {["Cloud", "Apps", "Data"].map((label) => (
-                    <div key={label} className="rounded-2xl bg-white/15 px-3 py-4 text-xs font-semibold">
-                      {label}
-                    </div>
-                  ))}
-                </div>
-              </div>
-              <div className="absolute -bottom-6 right-6 h-16 w-16 rounded-2xl bg-[#E12836]" />
+            <div className="mt-4 flex gap-2">
+              {serviceBanners.map((_, idx) => (
+                <span
+                  key={idx}
+                  className={`h-1.5 w-6 rounded-full ${idx === activeBanner ? "bg-[#E12836]" : "bg-white/30"}`}
+                />
+              ))}
             </div>
           </div>
         </div>

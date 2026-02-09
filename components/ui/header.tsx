@@ -3,12 +3,9 @@
 import { useState } from "react"
 import Link from "next/link"
 import Image from "next/image"
-import { usePathname } from "next/navigation"
 
 export function Header() {
   const [isMenuOpen, setIsMenuOpen] = useState(false)
-  const pathname = usePathname()
-  const isHome = pathname === "/"
 
   return (
     <>
@@ -37,9 +34,7 @@ export function Header() {
             </Link>
             <Link
               href="/contact"
-              className={`rounded-full px-4 py-2 text-sm font-semibold shadow-sm ${
-                isHome ? "bg-white text-blue-700" : "bg-blue-600 text-white"
-              }`}
+              className="rounded-full bg-blue-600 px-4 py-2 text-sm font-semibold text-white shadow-sm transition-colors hover:bg-blue-700"
             >
               Get Started
             </Link>
