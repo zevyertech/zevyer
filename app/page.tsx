@@ -44,68 +44,68 @@ export default function Home() {
   const serviceBanners = [
     {
       label: "Performance Marketing",
-      title: "Scale paid channels with measurable ROI.",
-      heading: "Performance campaigns that convert.",
+      title: "Optimize CAC, ROAS, and LTV with data-driven performance engineering.",
+      heading: "Performance marketing tuned for conversion efficiency.",
       cta: "Explore Performance",
       href: "/services/performance-marketing",
       metricLabel: "ROAS",
-      metricValue: "+3.2x",
-      stats: ["CAC ↓ 38%", "CTR ↑ 41%", "Leads ↑ 62%"],
+      metricValue: "3.2x",
+      stats: ["CTR +41%", "CPL -32%", "LTV +28%"],
       bars: ["#E12836", "#083EFD", "#E12836"],
     },
     {
       label: "Branding & Creative",
-      title: "Build a brand that converts and stands out.",
-      heading: "Stand out with premium brand systems.",
+      title: "Align positioning, identity, and creative systems to boost demand.",
+      heading: "Brand systems engineered for recognition and trust.",
       cta: "See Branding",
       href: "/services/branding-creative",
       metricLabel: "Engagement",
       metricValue: "+48%",
-      stats: ["Recall ↑ 29%", "CTR ↑ 33%", "Conv ↑ 21%"],
+      stats: ["Recall +29%", "CVR +21%", "Share +33%"],
       bars: ["#083EFD", "#E12836", "#083EFD"],
     },
     {
       label: "Web & App Development",
-      title: "Ship fast, secure products that scale.",
-      heading: "Launch faster with scalable engineering.",
+      title: "Build fast, secure products with measurable performance gains.",
+      heading: "Engineering-grade web and app development.",
       cta: "View Development",
       href: "/services/custom-development",
-      metricLabel: "Speed",
+      metricLabel: "LCP",
       metricValue: "1.2s",
-      stats: ["Uptime 99.9%", "INP ↓ 42%", "LCP ↓ 31%"],
+      stats: ["INP -42%", "TTFB -38%", "Uptime 99.9%"],
       bars: ["#083EFD", "#083EFD", "#E12836"],
     },
     {
       label: "SEO & Content",
-      title: "Grow organic traffic that compounds.",
-      heading: "Compound growth with SEO & content.",
+      title: "Increase qualified traffic with technical SEO and content strategy.",
+      heading: "Technical SEO that compounds organic growth.",
       cta: "Boost SEO",
       href: "/services/seo-and-content",
       metricLabel: "Organic",
-      metricValue: "+2.4x",
-      stats: ["Keywords ↑ 58%", "Clicks ↑ 74%", "Leads ↑ 39%"],
+      metricValue: "2.4x",
+      stats: ["Keywords +58%", "Clicks +74%", "MQL +39%"],
       bars: ["#E12836", "#083EFD", "#083EFD"],
     },
     {
       label: "Marketing Consultation",
-      title: "Clarity and execution for growth strategy.",
-      heading: "Clarity and execution for growth strategy.",
+      title: "Audit funnels, identify bottlenecks, and ship a prioritized plan.",
+      heading: "Technical growth strategy and roadmap.",
       cta: "Book Consultation",
       href: "/services/marketing-consultation",
       metricLabel: "Pipeline",
       metricValue: "+27%",
-      stats: ["CAC ↓ 22%", "MQL ↑ 35%", "Payback ↓ 18%"],
+      stats: ["Payback -18%", "MQL +35%", "CAC -22%"],
       bars: ["#083EFD", "#E12836", "#083EFD"],
     },
     {
       label: "AI & Automation",
-      title: "Automate workflows and customer support.",
-      heading: "Automations that save time at scale.",
+      title: "Automate workflows with AI to reduce cost and response times.",
+      heading: "AI automation for operational scale.",
       cta: "Explore AI",
       href: "/services/ai-automation",
       metricLabel: "Hours Saved",
       metricValue: "200+",
-      stats: ["Tickets ↓ 44%", "CSAT ↑ 19%", "Ops ↓ 31%"],
+      stats: ["Tickets -44%", "CSAT +19%", "Ops -31%"],
       bars: ["#E12836", "#083EFD", "#E12836"],
     },
   ]
@@ -237,35 +237,51 @@ export default function Home() {
 
         <div className="relative z-10 mx-auto max-w-5xl px-6 pt-28 pb-24">
           <div
-            className="rounded-2xl border border-white/10 bg-white/10 p-6 backdrop-blur"
+            className="rounded-2xl border border-white/10 bg-white/10 p-6 backdrop-blur md:p-8"
             onMouseEnter={() => setIsBannerPaused(true)}
             onMouseLeave={() => setIsBannerPaused(false)}
           >
-            <div>
-              <p className="text-xs uppercase tracking-widest text-white/70">{serviceBanners[activeBanner].label}</p>
-              <h3 className="mt-2 text-lg font-semibold">{serviceBanners[activeBanner].heading}</h3>
-              <p className="mt-2 text-sm text-white/80">{serviceBanners[activeBanner].title}</p>
-              <div className="mt-4 flex flex-wrap items-center gap-3 text-xs text-white/80">
-                {serviceBanners[activeBanner].stats.map((stat) => (
-                  <span key={stat} className="rounded-full bg-white/10 px-3 py-1">
-                    {stat}
-                  </span>
-                ))}
-              </div>
+            <div className="flex flex-wrap items-center justify-between gap-3">
+              <span className="inline-flex items-center rounded-full bg-white/10 px-4 py-1 text-xs font-semibold uppercase tracking-[0.2em] text-white/80">
+                {serviceBanners[activeBanner].label}
+              </span>
+              <span className="inline-flex items-center gap-2 rounded-full bg-white/10 px-3 py-1 text-xs font-semibold text-white/80">
+                {serviceBanners[activeBanner].metricLabel}
+                <span className="text-sm font-semibold text-white">{serviceBanners[activeBanner].metricValue}</span>
+              </span>
+            </div>
+
+            <h3 className="mt-4 text-2xl font-semibold leading-tight md:text-3xl">
+              {serviceBanners[activeBanner].heading}
+            </h3>
+            <p className="mt-3 max-w-2xl text-sm text-white/80 md:text-base">
+              {serviceBanners[activeBanner].title}
+            </p>
+
+            <div className="mt-6 grid gap-3 sm:grid-cols-3">
+              {serviceBanners[activeBanner].stats.map((stat) => (
+                <div key={stat} className="rounded-xl border border-white/10 bg-white/5 px-3 py-2">
+                  <p className="text-[11px] uppercase tracking-[0.2em] text-white/60">Signal</p>
+                  <p className="mt-1 text-sm font-semibold text-white/90">{stat}</p>
+                </div>
+              ))}
+            </div>
+
+            <div className="mt-6 flex flex-wrap items-center gap-4">
               <Link
                 href={serviceBanners[activeBanner].href}
-                className="mt-4 inline-flex items-center gap-2 rounded-full bg-[#E12836] px-4 py-2 text-xs font-semibold text-[#FFFFFB]"
+                className="inline-flex items-center gap-2 rounded-full bg-[#E12836] px-5 py-2.5 text-xs font-semibold text-[#FFFFFB] md:text-sm"
               >
-                {serviceBanners[activeBanner].cta} <ArrowRight className="h-3 w-3" />
+                {serviceBanners[activeBanner].cta} <ArrowRight className="h-4 w-4" />
               </Link>
-            </div>
-            <div className="mt-4 flex gap-2">
-              {serviceBanners.map((_, idx) => (
-                <span
-                  key={idx}
-                  className={`h-1.5 w-6 rounded-full ${idx === activeBanner ? "bg-[#E12836]" : "bg-white/30"}`}
-                />
-              ))}
+              <div className="flex gap-2">
+                {serviceBanners.map((_, idx) => (
+                  <span
+                    key={idx}
+                    className={`h-1.5 w-6 rounded-full ${idx === activeBanner ? "bg-[#E12836]" : "bg-white/30"}`}
+                  />
+                ))}
+              </div>
             </div>
           </div>
         </div>
